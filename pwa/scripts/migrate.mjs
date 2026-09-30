@@ -2,6 +2,9 @@
 //
 //   node scripts/migrate.mjs                 # fails if no database is configured
 //   node scripts/migrate.mjs --if-configured # used by `npm run build`: skips quietly without a database
+//
+// On Netlify, only production builds migrate: deploy previews and branch deploys share the
+// production database (per-context variables need a paid plan), so they must never change it.
 import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -21,7 +24,16 @@ export function migrationUrl(env = process.env) {
   );
 }
 
-export async function runMigrations(connectionString, log = console.log) {
+/** Why migrations must not run in this environment, or null when they may. */
+export function migrationBlockedReason(env = process.env) {
+  if (env.NETLIFY === 'true' && env.CONTEXT !== 'production') {
+    return `Netlify build in context "${env.CONTEXT || 'unknown'}": only production builds migrate the database.`;
+  }
+  return null;
+}
+
+/** `until`: last migration file to apply (inclusive), e.g. to rebuild an older schema for a rehearsal. */
+export async function runMigrations(connectionString, log = console.log, { until } = {}) {
   const client = new pg.Client({ connectionString });
   await client.connect();
   try {
@@ -29,7 +41,9 @@ export async function runMigrations(connectionString, log = console.log) {
       name text PRIMARY KEY,
       applied_at timestamptz NOT NULL DEFAULT now()
     )`);
-    const files = (await readdir(MIGRATIONS_DIR)).filter((f) => f.endsWith('.sql')).sort();
+    const files = (await readdir(MIGRATIONS_DIR))
+      .filter((f) => f.endsWith('.sql') && (!until || f <= until))
+      .sort();
     let applied = 0;
     for (const file of files) {
       await client.query('BEGIN');
@@ -62,6 +76,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     process.loadEnvFile('.env');
   } catch {
     // no .env file: rely on the real environment (e.g. Netlify build)
+  }
+  const blocked = migrationBlockedReason();
+  if (blocked) {
+    console.log(`Skipping database migrations. ${blocked}`);
+    process.exit(0);
   }
   const url = migrationUrl();
   if (!url) {

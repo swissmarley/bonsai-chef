@@ -72,5 +72,7 @@ export default defineConfig({
   server: { port: 5173, strictPort: true },
   test: {
     include: ['tests/**/*.test.ts'],
+    // Database tests need Postgres: `npm run test:db`.
+    exclude: ['tests/db/**', 'node_modules/**'],
   },
 });

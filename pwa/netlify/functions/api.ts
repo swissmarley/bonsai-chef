@@ -1,7 +1,8 @@
 import type { Config, Context } from '@netlify/functions';
 import { logout, me, requestCode, verifyCode } from '../lib/auth';
 import { createBonsai, deleteBonsai, listBonsai, updateBonsai } from '../lib/bonsai';
-import { Router } from '../lib/http';
+import { canUseData, PREVIEW_MESSAGE } from '../lib/deploy';
+import { json, Router } from '../lib/http';
 import { servePhoto, uploadPhoto } from '../lib/photos';
 import { publicKey, sendTest, subscribe, unsubscribe } from '../lib/push';
 import { createReminder, deleteReminder, listReminders } from '../lib/reminders';
@@ -30,7 +31,11 @@ const router = new Router()
   .on('POST', '/api/push/unsubscribe', unsubscribe)
   .on('POST', '/api/push/test', sendTest);
 
-export default (req: Request, context: Context) => router.handle(req, context.ip);
+export default async (req: Request, context: Context) => {
+  // Deploy previews share the production database and photos: they never touch them.
+  if (!canUseData(context)) return json({ error: PREVIEW_MESSAGE }, { status: 503 });
+  return router.handle(req, context.ip);
+};
 
 export const config: Config = {
   path: '/api/*',
