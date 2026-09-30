@@ -1,0 +1,9 @@
+// Code signing for Bonsai Chef.
+//
+// Your Apple Developer Team ID is kept out of git: put it in Signing.local.xcconfig
+// (next to this file, git-ignored) with a single line such as
+//
+//   DEVELOPMENT_TEAM = ABCDE12345
+//
+// Simulator builds work without it.
+#include? "Signing.local.xcconfig"

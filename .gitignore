@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Xcode (per-user state and build products)
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# Node / web app (details in pwa/.gitignore)
+node_modules/
+
+# Personal Xcode signing settings (Apple Team ID)
+ios/Signing.local.xcconfig
+
+# Local Netlify folder
+.netlify

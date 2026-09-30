@@ -1,0 +1,665 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2929DBDA2B50705B0079DEAB /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2929DBD92B50705B0079DEAB /* CategoryView.swift */; };
+		2929DBDC2B50722C0079DEAB /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2929DBDB2B50722C0079DEAB /* Category.swift */; };
+		292CD89D2C2EABEB00656C4B /* ReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292CD89C2C2EABEB00656C4B /* ReminderView.swift */; };
+		293B547E2B4C8DCD00A5C472 /* Bonsai_ChefApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B547D2B4C8DCD00A5C472 /* Bonsai_ChefApp.swift */; };
+		293B54802B4C8DCD00A5C472 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B547F2B4C8DCD00A5C472 /* ContentView.swift */; };
+		293B54822B4C8DCE00A5C472 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 293B54812B4C8DCE00A5C472 /* Assets.xcassets */; };
+		293B54852B4C8DCE00A5C472 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 293B54842B4C8DCE00A5C472 /* Preview Assets.xcassets */; };
+		293B548F2B4C8DCF00A5C472 /* Bonsai_ChefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B548E2B4C8DCF00A5C472 /* Bonsai_ChefTests.swift */; };
+		293B54992B4C8DCF00A5C472 /* Bonsai_ChefUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B54982B4C8DCF00A5C472 /* Bonsai_ChefUITests.swift */; };
+		293B549B2B4C8DCF00A5C472 /* Bonsai_ChefUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B549A2B4C8DCF00A5C472 /* Bonsai_ChefUITestsLaunchTests.swift */; };
+		293B54AA2B4C8F7500A5C472 /* AddRecordPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B54A92B4C8F7500A5C472 /* AddRecordPreview.swift */; };
+		293B54AC2B4C8FAD00A5C472 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B54AB2B4C8FAD00A5C472 /* RecordDetailView.swift */; };
+		293B54B02B4C90AD00A5C472 /* BonsaiDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B54AF2B4C90AD00A5C472 /* BonsaiDataModel.swift */; };
+		293B54B22B4C933B00A5C472 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B54B12B4C933B00A5C472 /* ImagePicker.swift */; };
+		293B54B62B4CA09300A5C472 /* EditRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293B54B52B4CA09300A5C472 /* EditRecordView.swift */; };
+		294BFFF32C18E16100E1EA25 /* ImageFullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294BFFF22C18E16100E1EA25 /* ImageFullScreenView.swift */; };
+		299C56532C1F5C91009389E8 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299C56522C1F5C91009389E8 /* AsyncImage.swift */; };
+		29C1BE962C20168500A18895 /* ToolRecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C1BE952C20168500A18895 /* ToolRecordDetailView.swift */; };
+		29C1BE982C20170600A18895 /* ToolAddRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C1BE972C20170600A18895 /* ToolAddRecordView.swift */; };
+		29C1BE9A2C20172200A18895 /* ToolEditRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C1BE992C20172200A18895 /* ToolEditRecordView.swift */; };
+		29C1BE9C2C20174B00A18895 /* ToolsSupplementsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C1BE9B2C20174B00A18895 /* ToolsSupplementsData.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		293B548B2B4C8DCF00A5C472 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 293B54722B4C8DCD00A5C472 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 293B54792B4C8DCD00A5C472;
+			remoteInfo = "Bonsai Chef";
+		};
+		293B54952B4C8DCF00A5C472 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 293B54722B4C8DCD00A5C472 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 293B54792B4C8DCD00A5C472;
+			remoteInfo = "Bonsai Chef";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7E873CA7D21B4A17A93AD813 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
+		2929DBD92B50705B0079DEAB /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		2929DBDB2B50722C0079DEAB /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		292CD89C2C2EABEB00656C4B /* ReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderView.swift; sourceTree = "<group>"; };
+		293B547A2B4C8DCD00A5C472 /* Bonsai Chef.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bonsai Chef.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		293B547D2B4C8DCD00A5C472 /* Bonsai_ChefApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bonsai_ChefApp.swift; sourceTree = "<group>"; };
+		293B547F2B4C8DCD00A5C472 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		293B54812B4C8DCE00A5C472 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		293B54842B4C8DCE00A5C472 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		293B548A2B4C8DCF00A5C472 /* Bonsai ChefTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bonsai ChefTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		293B548E2B4C8DCF00A5C472 /* Bonsai_ChefTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bonsai_ChefTests.swift; sourceTree = "<group>"; };
+		293B54942B4C8DCF00A5C472 /* Bonsai ChefUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bonsai ChefUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		293B54982B4C8DCF00A5C472 /* Bonsai_ChefUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bonsai_ChefUITests.swift; sourceTree = "<group>"; };
+		293B549A2B4C8DCF00A5C472 /* Bonsai_ChefUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bonsai_ChefUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		293B54A92B4C8F7500A5C472 /* AddRecordPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordPreview.swift; sourceTree = "<group>"; };
+		293B54AB2B4C8FAD00A5C472 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
+		293B54AF2B4C90AD00A5C472 /* BonsaiDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonsaiDataModel.swift; sourceTree = "<group>"; };
+		293B54B12B4C933B00A5C472 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		293B54B52B4CA09300A5C472 /* EditRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordView.swift; sourceTree = "<group>"; };
+		294BFFF22C18E16100E1EA25 /* ImageFullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFullScreenView.swift; sourceTree = "<group>"; };
+		299C56522C1F5C91009389E8 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
+		29C1BE952C20168500A18895 /* ToolRecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolRecordDetailView.swift; sourceTree = "<group>"; };
+		29C1BE972C20170600A18895 /* ToolAddRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolAddRecordView.swift; sourceTree = "<group>"; };
+		29C1BE992C20172200A18895 /* ToolEditRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolEditRecordView.swift; sourceTree = "<group>"; };
+		29C1BE9B2C20174B00A18895 /* ToolsSupplementsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsSupplementsData.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		293B54772B4C8DCD00A5C472 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		293B54872B4C8DCF00A5C472 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		293B54912B4C8DCF00A5C472 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		293B54712B4C8DCD00A5C472 = {
+			isa = PBXGroup;
+			children = (
+				7E873CA7D21B4A17A93AD813 /* Signing.xcconfig */,
+				293B547C2B4C8DCD00A5C472 /* Bonsai Chef */,
+				293B548D2B4C8DCF00A5C472 /* Bonsai ChefTests */,
+				293B54972B4C8DCF00A5C472 /* Bonsai ChefUITests */,
+				293B547B2B4C8DCD00A5C472 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		293B547B2B4C8DCD00A5C472 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				293B547A2B4C8DCD00A5C472 /* Bonsai Chef.app */,
+				293B548A2B4C8DCF00A5C472 /* Bonsai ChefTests.xctest */,
+				293B54942B4C8DCF00A5C472 /* Bonsai ChefUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		293B547C2B4C8DCD00A5C472 /* Bonsai Chef */ = {
+			isa = PBXGroup;
+			children = (
+				29C1BE942C20161B00A18895 /* ToolsSupplements */,
+				293B547D2B4C8DCD00A5C472 /* Bonsai_ChefApp.swift */,
+				293B547F2B4C8DCD00A5C472 /* ContentView.swift */,
+				293B54812B4C8DCE00A5C472 /* Assets.xcassets */,
+				293B54832B4C8DCE00A5C472 /* Preview Content */,
+				29C1BE932C200F3100A18895 /* Bonsai */,
+				293B54B12B4C933B00A5C472 /* ImagePicker.swift */,
+				2929DBD92B50705B0079DEAB /* CategoryView.swift */,
+				2929DBDB2B50722C0079DEAB /* Category.swift */,
+				294BFFF22C18E16100E1EA25 /* ImageFullScreenView.swift */,
+				299C56522C1F5C91009389E8 /* AsyncImage.swift */,
+				292CD89C2C2EABEB00656C4B /* ReminderView.swift */,
+			);
+			path = "Bonsai Chef";
+			sourceTree = "<group>";
+		};
+		293B54832B4C8DCE00A5C472 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				293B54842B4C8DCE00A5C472 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		293B548D2B4C8DCF00A5C472 /* Bonsai ChefTests */ = {
+			isa = PBXGroup;
+			children = (
+				293B548E2B4C8DCF00A5C472 /* Bonsai_ChefTests.swift */,
+			);
+			path = "Bonsai ChefTests";
+			sourceTree = "<group>";
+		};
+		293B54972B4C8DCF00A5C472 /* Bonsai ChefUITests */ = {
+			isa = PBXGroup;
+			children = (
+				293B54982B4C8DCF00A5C472 /* Bonsai_ChefUITests.swift */,
+				293B549A2B4C8DCF00A5C472 /* Bonsai_ChefUITestsLaunchTests.swift */,
+			);
+			path = "Bonsai ChefUITests";
+			sourceTree = "<group>";
+		};
+		29C1BE932C200F3100A18895 /* Bonsai */ = {
+			isa = PBXGroup;
+			children = (
+				293B54B52B4CA09300A5C472 /* EditRecordView.swift */,
+				293B54A92B4C8F7500A5C472 /* AddRecordPreview.swift */,
+				293B54AB2B4C8FAD00A5C472 /* RecordDetailView.swift */,
+				293B54AF2B4C90AD00A5C472 /* BonsaiDataModel.swift */,
+			);
+			path = Bonsai;
+			sourceTree = "<group>";
+		};
+		29C1BE942C20161B00A18895 /* ToolsSupplements */ = {
+			isa = PBXGroup;
+			children = (
+				29C1BE952C20168500A18895 /* ToolRecordDetailView.swift */,
+				29C1BE972C20170600A18895 /* ToolAddRecordView.swift */,
+				29C1BE992C20172200A18895 /* ToolEditRecordView.swift */,
+				29C1BE9B2C20174B00A18895 /* ToolsSupplementsData.swift */,
+			);
+			path = ToolsSupplements;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		293B54792B4C8DCD00A5C472 /* Bonsai Chef */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 293B549E2B4C8DCF00A5C472 /* Build configuration list for PBXNativeTarget "Bonsai Chef" */;
+			buildPhases = (
+				293B54762B4C8DCD00A5C472 /* Sources */,
+				293B54772B4C8DCD00A5C472 /* Frameworks */,
+				293B54782B4C8DCD00A5C472 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bonsai Chef";
+			productName = "Bonsai Chef";
+			productReference = 293B547A2B4C8DCD00A5C472 /* Bonsai Chef.app */;
+			productType = "com.apple.product-type.application";
+		};
+		293B54892B4C8DCF00A5C472 /* Bonsai ChefTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 293B54A12B4C8DCF00A5C472 /* Build configuration list for PBXNativeTarget "Bonsai ChefTests" */;
+			buildPhases = (
+				293B54862B4C8DCF00A5C472 /* Sources */,
+				293B54872B4C8DCF00A5C472 /* Frameworks */,
+				293B54882B4C8DCF00A5C472 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				293B548C2B4C8DCF00A5C472 /* PBXTargetDependency */,
+			);
+			name = "Bonsai ChefTests";
+			productName = "Bonsai ChefTests";
+			productReference = 293B548A2B4C8DCF00A5C472 /* Bonsai ChefTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		293B54932B4C8DCF00A5C472 /* Bonsai ChefUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 293B54A42B4C8DCF00A5C472 /* Build configuration list for PBXNativeTarget "Bonsai ChefUITests" */;
+			buildPhases = (
+				293B54902B4C8DCF00A5C472 /* Sources */,
+				293B54912B4C8DCF00A5C472 /* Frameworks */,
+				293B54922B4C8DCF00A5C472 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				293B54962B4C8DCF00A5C472 /* PBXTargetDependency */,
+			);
+			name = "Bonsai ChefUITests";
+			productName = "Bonsai ChefUITests";
+			productReference = 293B54942B4C8DCF00A5C472 /* Bonsai ChefUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		293B54722B4C8DCD00A5C472 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1510;
+				LastUpgradeCheck = 1510;
+				TargetAttributes = {
+					293B54792B4C8DCD00A5C472 = {
+						CreatedOnToolsVersion = 15.1;
+					};
+					293B54892B4C8DCF00A5C472 = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = 293B54792B4C8DCD00A5C472;
+					};
+					293B54932B4C8DCF00A5C472 = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = 293B54792B4C8DCD00A5C472;
+					};
+				};
+			};
+			buildConfigurationList = 293B54752B4C8DCD00A5C472 /* Build configuration list for PBXProject "Bonsai Chef" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 293B54712B4C8DCD00A5C472;
+			productRefGroup = 293B547B2B4C8DCD00A5C472 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				293B54792B4C8DCD00A5C472 /* Bonsai Chef */,
+				293B54892B4C8DCF00A5C472 /* Bonsai ChefTests */,
+				293B54932B4C8DCF00A5C472 /* Bonsai ChefUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		293B54782B4C8DCD00A5C472 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				293B54852B4C8DCE00A5C472 /* Preview Assets.xcassets in Resources */,
+				293B54822B4C8DCE00A5C472 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		293B54882B4C8DCF00A5C472 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		293B54922B4C8DCF00A5C472 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		293B54762B4C8DCD00A5C472 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29C1BE9C2C20174B00A18895 /* ToolsSupplementsData.swift in Sources */,
+				29C1BE962C20168500A18895 /* ToolRecordDetailView.swift in Sources */,
+				293B54802B4C8DCD00A5C472 /* ContentView.swift in Sources */,
+				293B54AA2B4C8F7500A5C472 /* AddRecordPreview.swift in Sources */,
+				293B54AC2B4C8FAD00A5C472 /* RecordDetailView.swift in Sources */,
+				293B54B22B4C933B00A5C472 /* ImagePicker.swift in Sources */,
+				293B547E2B4C8DCD00A5C472 /* Bonsai_ChefApp.swift in Sources */,
+				299C56532C1F5C91009389E8 /* AsyncImage.swift in Sources */,
+				294BFFF32C18E16100E1EA25 /* ImageFullScreenView.swift in Sources */,
+				29C1BE982C20170600A18895 /* ToolAddRecordView.swift in Sources */,
+				2929DBDC2B50722C0079DEAB /* Category.swift in Sources */,
+				293B54B02B4C90AD00A5C472 /* BonsaiDataModel.swift in Sources */,
+				29C1BE9A2C20172200A18895 /* ToolEditRecordView.swift in Sources */,
+				2929DBDA2B50705B0079DEAB /* CategoryView.swift in Sources */,
+				292CD89D2C2EABEB00656C4B /* ReminderView.swift in Sources */,
+				293B54B62B4CA09300A5C472 /* EditRecordView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		293B54862B4C8DCF00A5C472 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				293B548F2B4C8DCF00A5C472 /* Bonsai_ChefTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		293B54902B4C8DCF00A5C472 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				293B549B2B4C8DCF00A5C472 /* Bonsai_ChefUITestsLaunchTests.swift in Sources */,
+				293B54992B4C8DCF00A5C472 /* Bonsai_ChefUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		293B548C2B4C8DCF00A5C472 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 293B54792B4C8DCD00A5C472 /* Bonsai Chef */;
+			targetProxy = 293B548B2B4C8DCF00A5C472 /* PBXContainerItemProxy */;
+		};
+		293B54962B4C8DCF00A5C472 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 293B54792B4C8DCD00A5C472 /* Bonsai Chef */;
+			targetProxy = 293B54952B4C8DCF00A5C472 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		293B549C2B4C8DCF00A5C472 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		293B549D2B4C8DCF00A5C472 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		293B549F2B4C8DCF00A5C472 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E873CA7D21B4A17A93AD813 /* Signing.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Bonsai Chef/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Bonsai-Chef-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "swissmarley.Bonsai-Chef";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		293B54A02B4C8DCF00A5C472 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E873CA7D21B4A17A93AD813 /* Signing.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Bonsai Chef/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Bonsai-Chef-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "swissmarley.Bonsai-Chef";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		293B54A22B4C8DCF00A5C472 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "swissmarley.Bonsai-ChefTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bonsai Chef.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Bonsai Chef";
+			};
+			name = Debug;
+		};
+		293B54A32B4C8DCF00A5C472 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "swissmarley.Bonsai-ChefTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bonsai Chef.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Bonsai Chef";
+			};
+			name = Release;
+		};
+		293B54A52B4C8DCF00A5C472 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "swissmarley.Bonsai-ChefUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Bonsai Chef";
+			};
+			name = Debug;
+		};
+		293B54A62B4C8DCF00A5C472 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "swissmarley.Bonsai-ChefUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Bonsai Chef";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		293B54752B4C8DCD00A5C472 /* Build configuration list for PBXProject "Bonsai Chef" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				293B549C2B4C8DCF00A5C472 /* Debug */,
+				293B549D2B4C8DCF00A5C472 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		293B549E2B4C8DCF00A5C472 /* Build configuration list for PBXNativeTarget "Bonsai Chef" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				293B549F2B4C8DCF00A5C472 /* Debug */,
+				293B54A02B4C8DCF00A5C472 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		293B54A12B4C8DCF00A5C472 /* Build configuration list for PBXNativeTarget "Bonsai ChefTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				293B54A22B4C8DCF00A5C472 /* Debug */,
+				293B54A32B4C8DCF00A5C472 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		293B54A42B4C8DCF00A5C472 /* Build configuration list for PBXNativeTarget "Bonsai ChefUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				293B54A52B4C8DCF00A5C472 /* Debug */,
+				293B54A62B4C8DCF00A5C472 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 293B54722B4C8DCD00A5C472 /* Project object */;
+}
