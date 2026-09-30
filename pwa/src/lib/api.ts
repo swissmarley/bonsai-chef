@@ -46,7 +46,8 @@ export const api = {
     request<{ bonsai: Bonsai }>('PUT', `/api/bonsai/${id}`, input).then((r) => r.bonsai),
   deleteBonsai: (id: string) => request<void>('DELETE', `/api/bonsai/${id}`),
 
-  listTools: () => request<{ tools: Tool[] }>('GET', '/api/tools').then((r) => r.tools),
+  // `types=all`: also the Concimi, which the first release of the app would not understand.
+  listTools: () => request<{ tools: Tool[] }>('GET', '/api/tools?types=all').then((r) => r.tools),
   createTool: (input: ToolInput) => request<{ tool: Tool }>('POST', '/api/tools', input).then((r) => r.tool),
   updateTool: (id: string, input: ToolInput) => request<{ tool: Tool }>('PUT', `/api/tools/${id}`, input).then((r) => r.tool),
   deleteTool: (id: string) => request<void>('DELETE', `/api/tools/${id}`),

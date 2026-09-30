@@ -1,4 +1,4 @@
-import { Box, ChevronRight, CircleMinus, CircleUserRound, Hammer, Plus, Sprout, TreeDeciduous, type LucideIcon } from 'lucide-react';
+import { Box, ChevronRight, CircleMinus, CircleUserRound, FlaskConical, Hammer, Plus, Sprout, TreeDeciduous, type LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import {
@@ -21,7 +21,7 @@ import { photoUrl } from '../lib/api';
 import { rememberTab, TABS, type TabView } from '../lib/navigation';
 import { useBonsaiList, useDeleteBonsai, useDeleteTool, useToolList } from '../lib/queries';
 
-export const TOOL_ICONS: Record<ToolType, LucideIcon> = { substrato: Sprout, attrezzo: Hammer, accessorio: Box };
+export const TOOL_ICONS: Record<ToolType, LucideIcon> = { substrato: Sprout, concime: FlaskConical, attrezzo: Hammer, accessorio: Box };
 
 /** Care tasks whose best period includes the current month, e.g. "Questo mese: Potatura · Concimazione". */
 function careThisMonth(bonsai: Bonsai): string {

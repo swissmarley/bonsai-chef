@@ -5,6 +5,7 @@ interface Email {
   subject: string;
   text: string;
   html: string;
+  replyTo?: string;
 }
 
 /** True under `netlify dev` / `netlify serve` on this machine, never on deployed sites. */
@@ -15,7 +16,8 @@ export async function sendEmail(email: Email): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     if (isDev()) {
-      console.log(`\n──── 📧 Email (sviluppo) ────\nA: ${email.to}\nOggetto: ${email.subject}\n\n${email.text}\n────────────────────────────\n`);
+      const replyTo = email.replyTo ? `\nRispondi a: ${email.replyTo}` : '';
+      console.log(`\n──── 📧 Email (sviluppo) ────\nA: ${email.to}${replyTo}\nOggetto: ${email.subject}\n\n${email.text}\n────────────────────────────\n`);
       return;
     }
     throw new HttpError(500, "L'invio delle email non è configurato sul server.");
@@ -30,6 +32,7 @@ export async function sendEmail(email: Email): Promise<void> {
       subject: email.subject,
       text: email.text,
       html: email.html,
+      ...(email.replyTo ? { reply_to: email.replyTo } : {}),
     }),
   });
   if (!res.ok) {
@@ -75,6 +78,21 @@ export function reminderEmail(to: string, bonsaiName: string, message: string, l
       `Promemoria: ${bonsaiName}`,
       `<p style="margin:0 0 24px;font-size:16px;line-height:1.5">${escapeHtml(body)}</p>
 <a href="${escapeHtml(link)}" style="display:inline-block;background:#3f6f1c;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:10px;font-weight:600">Apri ${escapeHtml(bonsaiName)}</a>`,
+    ),
+  };
+}
+
+/** A message from the contact form of the Info page, to the developer (replies go to the tester). */
+export function feedbackEmail(to: string, from: string, message: string): Email {
+  return {
+    to,
+    replyTo: from,
+    subject: `Bonsai Chef: messaggio da ${from}`,
+    text: `Messaggio da ${from} (per rispondere, rispondi a questa email):\n\n${message}`,
+    html: layout(
+      'Nuovo messaggio dall’app',
+      `<p style="margin:0 0 12px;font-size:14px;color:#6b6b70">Da <strong>${escapeHtml(from)}</strong> — per rispondere, rispondi a questa email.</p>
+<p style="margin:0;font-size:16px;line-height:1.5;white-space:pre-wrap">${escapeHtml(message)}</p>`,
     ),
   };
 }

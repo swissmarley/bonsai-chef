@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { Photo, Tool, ToolType } from '../../shared/model';
+import { LEGACY_TOOL_TYPES, TOOL_TYPES, type Photo, type Tool, type ToolType } from '../../shared/model';
 import { requireUser } from './auth';
 import { getDb, iso } from './db';
 import { HttpError, isUuid, json, noContent, parseInput, readJson, type RouteContext } from './http';
@@ -45,11 +45,16 @@ async function loadTool(userId: string, id: string): Promise<Tool> {
   return toTool(row, photos.get(id) ?? []);
 }
 
-export async function listTools({ req }: RouteContext): Promise<Response> {
+/** `?types=all` is sent by this version of the app; older versions crash on types they do not know. */
+export async function listTools({ req, url }: RouteContext): Promise<Response> {
   const user = await requireUser(req);
+  const types = url.searchParams.get('types') === 'all' ? TOOL_TYPES : LEGACY_TOOL_TYPES;
   const db = await getDb();
   const [rows, photos] = await Promise.all([
-    db.query<ToolRow>(`SELECT ${COLUMNS} FROM tools WHERE user_id = $1 ORDER BY created_at, id`, [user.id]),
+    db.query<ToolRow>(`SELECT ${COLUMNS} FROM tools WHERE user_id = $1 AND type = ANY($2::text[]) ORDER BY created_at, id`, [
+      user.id,
+      types,
+    ]),
     photosByOwner(user.id, 'tool_id'),
   ]);
   return json({ tools: rows.map((r) => toTool(r, photos.get(r.id) ?? [])) });
