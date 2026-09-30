@@ -43,8 +43,8 @@ Other scripts: `npm test` · `npm run typecheck` · `npm run build` · `npm run 
 2. Set **Base directory** to `pwa`. Build command (`npm run build`) and publish directory (`dist`) come from `pwa/netlify.toml`.
 
 ### 2. Database (Neon)
-1. Create a project at [console.neon.tech](https://console.neon.tech) (free tier is plenty), in a region close to your
-   Netlify functions (e.g. AWS Frankfurt `eu-central-1`).
+1. Create a project at [console.neon.tech](https://console.neon.tech) (free tier is plenty) in the same region as your
+   Netlify functions: **AWS US East 2 (Ohio)**, Netlify's default. A distant database adds a round trip to every query.
 2. **Connect** → copy the **pooled** connection string → Netlify variable `DATABASE_URL`.
 3. Optional: the direct (unpooled) string → `DATABASE_URL_UNPOOLED`, used only for migrations.
 
