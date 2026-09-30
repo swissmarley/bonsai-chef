@@ -1,4 +1,17 @@
-import { Box, ChevronRight, CircleMinus, CircleUserRound, FlaskConical, Hammer, Plus, Sprout, TreeDeciduous, type LucideIcon } from 'lucide-react';
+import {
+  Box,
+  ChevronRight,
+  CircleMinus,
+  CircleUserRound,
+  ClipboardPlus,
+  FlaskConical,
+  Folders,
+  Hammer,
+  Plus,
+  Sprout,
+  TreeDeciduous,
+  type LucideIcon,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import {
@@ -8,18 +21,20 @@ import {
   TOOL_TYPES,
   monthsInRange,
   type Bonsai,
+  type BonsaiGroup,
   type Photo,
   type Tool,
   type ToolType,
 } from '../../shared/model';
 import { AccountSheet } from '../components/AccountSheet';
 import { ConfirmDialog, Dialog } from '../components/Dialog';
+import { GroupsSheet } from '../components/Groups';
 import { PageHeader } from '../components/PageHeader';
 import { EmptyState, ErrorState, PageSpinner } from '../components/States';
 import { useToast } from '../components/Toast';
 import { photoUrl } from '../lib/api';
 import { rememberTab, TABS, type TabView } from '../lib/navigation';
-import { useBonsaiList, useDeleteBonsai, useDeleteTool, useToolList } from '../lib/queries';
+import { useBonsaiList, useDeleteBonsai, useDeleteTool, useGroups, useToolList } from '../lib/queries';
 
 export const TOOL_ICONS: Record<ToolType, LucideIcon> = { substrato: Sprout, concime: FlaskConical, attrezzo: Hammer, accessorio: Box };
 
@@ -100,10 +115,32 @@ function RowList({ items, editing, onDelete }: { items: RowItem[]; editing: bool
   );
 }
 
+interface ListSection {
+  title?: string;
+  /** Sections of a group can record an intervention on all their trees at once. */
+  group?: BonsaiGroup;
+  items: RowItem[];
+}
+
+/** Bonsai in one section per group (in the chosen order), then the ones without a group. */
+function bonsaiSections(bonsai: Bonsai[], groups: BonsaiGroup[], showCategory: boolean, ungroupedTitle?: string): ListSection[] {
+  const known = new Set(groups.map((g) => g.id));
+  const sections: ListSection[] = groups.map((group) => ({
+    title: group.name,
+    group,
+    items: bonsai.filter((b) => b.groupId === group.id).map((b) => bonsaiRow(b, showCategory)),
+  }));
+  const ungrouped = bonsai.filter((b) => !b.groupId || !known.has(b.groupId)).map((b) => bonsaiRow(b, showCategory));
+  const anyGroup = sections.some((s) => s.items.length);
+  sections.push({ title: anyGroup ? 'Senza gruppo' : ungroupedTitle, items: ungrouped });
+  return sections;
+}
+
 export function ListPage({ view }: { view: TabView }) {
   const tab = TABS.find((t) => t.view === view)!;
   const bonsaiQuery = useBonsaiList();
   const toolQuery = useToolList();
+  const groupQuery = useGroups();
   const deleteBonsai = useDeleteBonsai();
   const deleteTool = useDeleteTool();
   const navigate = useNavigate();
@@ -111,6 +148,7 @@ export function ListPage({ view }: { view: TabView }) {
   const [editing, setEditing] = useState(false);
   const [account, setAccount] = useState(false);
   const [addMenu, setAddMenu] = useState(false);
+  const [groupsSheet, setGroupsSheet] = useState(false);
   const [toDelete, setToDelete] = useState<RowItem | null>(null);
   const [deleteError, setDeleteError] = useState('');
 
@@ -123,22 +161,22 @@ export function ListPage({ view }: { view: TabView }) {
   const needsTools = view === 'tutti' || view === 'strumenti';
   const queries = [needsBonsai && bonsaiQuery, needsTools && toolQuery].filter((q) => q !== false);
   const failed = queries.find((q) => q.isError && !q.data);
+  // Groups only arrange the list: without them (e.g. offline, never loaded) it still shows every tree.
+  const groupsPending = needsBonsai && groupQuery.isPending && !groupQuery.isError;
 
   const bonsai = (bonsaiQuery.data ?? []).filter((b) => view === 'tutti' || b.category === view);
   const tools = toolQuery.data ?? [];
+  const groups = groupQuery.data ?? [];
 
-  const sections: { title?: string; items: RowItem[] }[] =
+  const sections: ListSection[] =
     view === 'tutti'
-      ? [
-          { title: 'Bonsai', items: bonsai.map((b) => bonsaiRow(b, true)) },
-          { title: 'Strumenti & Altro', items: tools.map((t) => toolRow(t, true)) },
-        ]
+      ? [...bonsaiSections(bonsai, groups, true, 'Bonsai'), { title: 'Strumenti & Altro', items: tools.map((t) => toolRow(t, true)) }]
       : view === 'strumenti'
         ? TOOL_TYPES.map((type) => ({
             title: TOOL_TYPE_LABELS[type],
             items: tools.filter((t) => t.type === type).map((t) => toolRow(t, false)),
           }))
-        : [{ items: bonsai.map((b) => bonsaiRow(b, false)) }];
+        : bonsaiSections(bonsai, groups, false);
   const visible = sections.filter((s) => s.items.length);
   const isEmpty = visible.length === 0;
 
@@ -193,21 +231,42 @@ export function ListPage({ view }: { view: TabView }) {
       <div className="page-content">
         {failed ? (
           <ErrorState error={failed.error} onRetry={() => queries.forEach((q) => void q.refetch())} />
-        ) : queries.some((q) => q.isPending) ? (
+        ) : queries.some((q) => q.isPending) || groupsPending ? (
           <PageSpinner />
         ) : isEmpty ? (
           <EmptyList view={view} onAdd={add} />
         ) : (
-          visible.map((s, i) => (
-            <section key={s.title ?? i} className="section">
-              {s.title && <h2 className="section-title">{s.title}</h2>}
-              <RowList items={s.items} editing={editing} onDelete={setToDelete} />
-            </section>
-          ))
+          <>
+            {visible.map((s, i) => (
+              <section key={s.group?.id ?? s.title ?? i} className="section">
+                {s.group ? (
+                  <div className="section-header">
+                    <h2 className="section-title">{s.title}</h2>
+                    <Link
+                      to={`/gruppi/${s.group.id}/storico/nuovo${view === 'esterno' || view === 'interno' ? `?vista=${view}` : ''}`}
+                      className="section-action"
+                      aria-label={`Registra un intervento per il gruppo «${s.title}»`}
+                    >
+                      <ClipboardPlus size={16} aria-hidden="true" /> Registra
+                    </Link>
+                  </div>
+                ) : (
+                  s.title && <h2 className="section-title">{s.title}</h2>
+                )}
+                <RowList items={s.items} editing={editing} onDelete={setToDelete} />
+              </section>
+            ))}
+            {needsBonsai && bonsai.length > 0 && (
+              <button type="button" className="btn btn-plain btn-block list-footer-action" onClick={() => setGroupsSheet(true)}>
+                <Folders size={18} aria-hidden="true" /> Gestisci gruppi
+              </button>
+            )}
+          </>
         )}
       </div>
 
       {account && <AccountSheet onClose={() => setAccount(false)} />}
+      {groupsSheet && <GroupsSheet onClose={() => setGroupsSheet(false)} />}
       {addMenu && (
         <Dialog title="Aggiungi" onClose={() => setAddMenu(false)}>
           <div className="action-list">
@@ -245,7 +304,7 @@ function EmptyList({ view, onAdd }: { view: TabView; onAdd: () => void }) {
     tutti: { title: 'Il tuo giardino è vuoto', text: 'Aggiungi il tuo primo bonsai o uno strumento.', action: 'Aggiungi' },
     esterno: { title: 'Nessun bonsai da esterno', text: 'I bonsai che vivono all’aperto appariranno qui.', action: 'Aggiungi Bonsai' },
     interno: { title: 'Nessun bonsai da interno', text: 'I bonsai che vivono in casa appariranno qui.', action: 'Aggiungi Bonsai' },
-    strumenti: { title: 'Nessuno strumento', text: 'Substrati, attrezzi e accessori appariranno qui.', action: 'Aggiungi Strumento' },
+    strumenti: { title: 'Nessuno strumento', text: 'Substrati, concimi, attrezzi e accessori appariranno qui.', action: 'Aggiungi Strumento' },
   };
   const c = copy[view];
   return (

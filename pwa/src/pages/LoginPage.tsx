@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Mail } from 'lucide-react';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { Link } from 'react-router';
 import { Spinner } from '../components/States';
 import { api } from '../lib/api';
 import { startSession } from '../lib/queries';
@@ -163,6 +164,9 @@ export function LoginPage() {
           </form>
         )}
       </div>
+      <Link to="/info" className="login-credit">
+        Creato da Nakya
+      </Link>
     </main>
   );
 }

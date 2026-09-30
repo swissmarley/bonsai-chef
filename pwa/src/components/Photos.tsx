@@ -89,12 +89,19 @@ export function PhotoEditor({ items, setItems }: { items: PhotoItem[]; setItems:
   );
 }
 
-export function PhotoGrid({ photos, onOpen }: { photos: Photo[]; onOpen: (index: number) => void }) {
+export function PhotoGrid({ photos, onOpen }: { photos: (Photo & { caption?: string })[]; onOpen: (index: number) => void }) {
   return (
     <div className="photo-grid">
       {photos.map((p, i) => (
-        <button key={p.id} type="button" className="photo-grid-item" onClick={() => onOpen(i)} aria-label={`Apri foto ${i + 1} di ${photos.length}`}>
+        <button
+          key={p.id}
+          type="button"
+          className="photo-grid-item"
+          onClick={() => onOpen(i)}
+          aria-label={`Apri foto ${i + 1} di ${photos.length}${p.caption ? `: ${p.caption}` : ''}`}
+        >
           <img src={photoUrl(p.id)} alt="" loading="lazy" />
+          {p.caption && <span className="photo-caption">{p.caption.split(' · ')[0]}</span>}
         </button>
       ))}
     </div>
@@ -102,7 +109,7 @@ export function PhotoGrid({ photos, onOpen }: { photos: Photo[]; onOpen: (index:
 }
 
 /** Full-screen, swipeable gallery (the iOS ImageFullScreenView). */
-export function PhotoViewer({ photos, index, onClose }: { photos: Photo[]; index: number; onClose: () => void }) {
+export function PhotoViewer({ photos, index, onClose }: { photos: (Photo & { caption?: string })[]; index: number; onClose: () => void }) {
   const track = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(index);
 
@@ -140,6 +147,7 @@ export function PhotoViewer({ photos, index, onClose }: { photos: Photo[]; index
       </div>
       <div className="viewer-bar">
         <span className="viewer-count">
+          {photos[current]?.caption && <span className="viewer-caption">{photos[current].caption}</span>}
           {photos.length > 1 ? `${current + 1} di ${photos.length}` : ''}
         </span>
         <button type="button" className="btn btn-light" onClick={onClose} autoFocus>

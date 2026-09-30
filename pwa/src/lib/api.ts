@@ -1,4 +1,17 @@
-import type { Bonsai, BonsaiInput, Photo, Reminder, Tool, ToolInput, User } from '../../shared/model';
+import type {
+  Bonsai,
+  BonsaiGroup,
+  BonsaiInput,
+  CareEvent,
+  CareEventCreateInput,
+  CareEventFields,
+  CareEventSuggestions,
+  Photo,
+  Reminder,
+  Tool,
+  ToolInput,
+  User,
+} from '../../shared/model';
 
 export class ApiError extends Error {
   constructor(
@@ -59,6 +72,22 @@ export const api = {
   createReminder: (input: { bonsaiId: string; message: string; remindAt: string }) =>
     request<{ reminder: Reminder }>('POST', '/api/reminders', input).then((r) => r.reminder),
   deleteReminder: (id: string) => request<void>('DELETE', `/api/reminders/${id}`),
+
+  listGroups: () => request<{ groups: BonsaiGroup[] }>('GET', '/api/groups').then((r) => r.groups),
+  createGroup: (name: string) => request<{ group: BonsaiGroup }>('POST', '/api/groups', { name }).then((r) => r.group),
+  renameGroup: (id: string, name: string) => request<{ group: BonsaiGroup }>('PUT', `/api/groups/${id}`, { name }).then((r) => r.group),
+  reorderGroups: (ids: string[]) => request<{ groups: BonsaiGroup[] }>('PUT', '/api/groups/order', { ids }).then((r) => r.groups),
+  deleteGroup: (id: string) => request<void>('DELETE', `/api/groups/${id}`),
+
+  listEvents: (bonsaiId: string) => request<{ events: CareEvent[] }>('GET', `/api/bonsai/${bonsaiId}/events`).then((r) => r.events),
+  eventSuggestions: () => request<{ suggestions: CareEventSuggestions }>('GET', '/api/events/suggestions').then((r) => r.suggestions),
+  createEvents: (input: CareEventCreateInput) => request<{ events: CareEvent[]; reminders: Reminder[] }>('POST', '/api/events', input),
+  updateEvent: (id: string, input: CareEventFields) => request<{ event: CareEvent }>('PUT', `/api/events/${id}`, input).then((r) => r.event),
+  deleteEvent: (id: string) => request<void>('DELETE', `/api/events/${id}`),
+
+  sendFeedback: (message: string) => request<void>('POST', '/api/feedback', { message }),
+  seenAnnouncements: () => request<{ seen: string[] }>('GET', '/api/announcements').then((r) => r.seen),
+  markAnnouncementSeen: (key: string) => request<void>('POST', `/api/announcements/${key}/seen`),
 
   pushPublicKey: () => request<{ publicKey: string }>('GET', '/api/push/public-key').then((r) => r.publicKey),
   pushSubscribe: (subscription: PushSubscriptionJSON) => request<void>('POST', '/api/push/subscribe', subscription),

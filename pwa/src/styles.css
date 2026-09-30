@@ -656,6 +656,18 @@ input::-webkit-date-and-time-value {
   font-weight: 500;
 }
 
+/* Four options (Strumenti categories) must fit small phones too. */
+@media (max-width: 390px) {
+  .segmented button {
+    min-width: 0;
+    padding: 6px 2px;
+    overflow: hidden;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .segmented button.is-active {
   background: var(--segment-active);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
@@ -1320,6 +1332,468 @@ button.month-cell {
   box-shadow: var(--shadow);
   font-size: 15px;
   transform: translateX(-50%);
+}
+
+/* ---------- Checkboxes, chips, section actions ---------- */
+
+input[type='checkbox'] {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 16px;
+  font-size: 16px;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.field .check-row {
+  padding: 6px 0 0;
+  color: var(--text-2);
+  font-size: 15px;
+}
+
+.check-list .check-row {
+  align-items: center;
+  min-height: 48px;
+}
+
+.card.list.check-list > li + li,
+.list.check-list > li + li {
+  background-size: calc(100% - 50px) 1px;
+}
+
+.frequency-row {
+  display: grid;
+  grid-template-columns: auto 5.5em 1fr;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-2);
+}
+
+.field-hint {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 8px 4px 0;
+}
+
+.section-header .section-title {
+  margin-bottom: 7px;
+}
+
+.section-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.section-action:hover {
+  background: var(--fill);
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px 14px;
+}
+
+.card-actions .btn {
+  gap: 6px;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chips.is-wrapping {
+  flex-wrap: wrap;
+  padding: 0;
+  overflow: visible;
+}
+
+.chip-button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  min-height: 34px;
+  padding: 6px 12px;
+  border: 1px solid var(--fill-strong);
+  border-radius: 999px;
+  background: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chip-button.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.chip-muted {
+  background: var(--fill);
+  color: var(--text-2);
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--text-2);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+
+.is-late {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.list-footer-action {
+  margin-top: 16px;
+}
+
+/* ---------- Diary ---------- */
+
+.diary-entry {
+  align-items: flex-start;
+}
+
+.diary-entry .row-leading-icon {
+  margin-top: 2px;
+}
+
+.diary-entry .row-chevron {
+  align-self: center;
+}
+
+.diary-summary {
+  margin-top: 2px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.diary-notes {
+  display: -webkit-box;
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: 14px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  white-space: pre-wrap;
+}
+
+.diary-photos {
+  display: flex;
+  gap: 6px;
+  padding: 0 16px 12px 48px;
+  overflow-x: auto;
+}
+
+.diary-photo {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 8px;
+  background: var(--fill);
+  cursor: zoom-in;
+}
+
+.diary-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card > .diary-more {
+  justify-content: center;
+}
+
+.photo-caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 14px 6px 4px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.viewer-caption {
+  display: block;
+  margin-bottom: 2px;
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* ---------- Diary entry form ---------- */
+
+.form-subject {
+  margin: 8px 4px 0;
+  color: var(--text-2);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.kind-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.kind-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--fill-strong);
+  border-radius: 10px;
+  background: none;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.kind-option svg {
+  flex: none;
+  color: var(--accent);
+}
+
+.kind-option.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---------- Groups sheet ---------- */
+
+.sheet-intro {
+  margin-bottom: 14px;
+}
+
+.group-list {
+  margin: 0 0 12px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+  list-style: none;
+}
+
+.group-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 56px;
+  padding: 6px 4px 6px 14px;
+}
+
+.group-row + .group-row {
+  border-top: 0.5px solid var(--separator);
+}
+
+.group-name {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.group-name strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group-name .muted {
+  font-size: 13px;
+}
+
+.group-actions {
+  display: flex;
+  flex: none;
+}
+
+.group-actions .icon-button,
+.group-edit .icon-button {
+  width: 38px;
+  height: 38px;
+}
+
+.icon-button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.icon-button.is-danger {
+  color: var(--danger);
+}
+
+.group-edit {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 4px;
+}
+
+.group-add {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.group-add .btn {
+  flex: none;
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+/* ---------- Info page, login credit, news ---------- */
+
+.info-page {
+  padding-bottom: calc(40px + var(--safe-bottom));
+}
+
+.info-art {
+  width: min(36vw, 150px);
+  margin: 8px auto 0;
+}
+
+.info-version {
+  margin: 4px 0 0;
+  color: var(--text-2);
+  font-size: 13px;
+  text-align: center;
+}
+
+.info-page .card-text p {
+  margin: 0;
+}
+
+.info-page .card-text p + p {
+  margin-top: 10px;
+  background-image: none; /* paragraphs of one card, not rows */
+}
+
+.info-page .section-title svg {
+  vertical-align: -2px;
+}
+
+.contact-form .field {
+  padding-top: 0;
+}
+
+.contact-error {
+  margin: 0 16px;
+}
+
+.info-credit,
+.login-credit {
+  display: block;
+  margin: 24px auto 0;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-decoration: none;
+}
+
+.login-credit {
+  margin-top: 20px;
+  padding: 6px 10px;
+}
+
+.login-credit:hover {
+  color: var(--accent);
+}
+
+.action-item-label {
+  flex: 1;
+}
+
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.news-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.news-list svg {
+  flex: none;
+  margin-top: 1px;
+  color: var(--accent);
+}
+
+.news-list strong {
+  display: block;
+  color: var(--text);
+}
+
+.news-ok {
+  margin-top: 16px;
 }
 
 /* ---------- Motion ---------- */

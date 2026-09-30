@@ -4,10 +4,13 @@ import { useEffect } from 'react';
 import { createBrowserRouter, Link, Navigate, Outlet, ScrollRestoration, useRouteError } from 'react-router';
 import { EmptyState, ErrorState, Splash } from './components/States';
 import { TabBar } from './components/TabBar';
+import { WhatsNew } from './components/WhatsNew';
 import { syncPushSubscription } from './lib/push';
 import { useMe, useReminders } from './lib/queries';
 import { BonsaiDetailPage } from './pages/BonsaiDetailPage';
 import { BonsaiFormPage } from './pages/BonsaiFormPage';
+import { EventFormPage } from './pages/EventFormPage';
+import { InfoPage } from './pages/InfoPage';
 import { ListPage } from './pages/ListPage';
 import { LoginPage } from './pages/LoginPage';
 import { ToolDetailPage } from './pages/ToolDetailPage';
@@ -44,7 +47,7 @@ function SignedInEffects() {
     document.addEventListener('visibilitychange', onVisible);
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, [qc]);
-  return null;
+  return <WhatsNew />;
 }
 
 function TabsLayout() {
@@ -85,6 +88,8 @@ function RouteError() {
 }
 
 export const router = createBrowserRouter([
+  // Readable without an account too (linked from the login screen).
+  { path: 'info', element: <InfoPage />, errorElement: <RouteError /> },
   {
     element: <Root />,
     errorElement: <RouteError />,
@@ -107,6 +112,9 @@ export const router = createBrowserRouter([
         children: [
           { path: 'bonsai/nuovo', element: <BonsaiFormPage /> },
           { path: 'bonsai/:id/modifica', element: <BonsaiFormPage /> },
+          { path: 'bonsai/:id/storico/nuovo', element: <EventFormPage /> },
+          { path: 'bonsai/:id/storico/:eventId', element: <EventFormPage /> },
+          { path: 'gruppi/:groupId/storico/nuovo', element: <EventFormPage /> },
           { path: 'strumenti/nuovo', element: <ToolFormPage /> },
           { path: 'strumenti/:id/modifica', element: <ToolFormPage /> },
         ],

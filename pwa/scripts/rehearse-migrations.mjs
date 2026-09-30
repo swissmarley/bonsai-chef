@@ -65,7 +65,7 @@ export async function rehearse(url, log = console.log, migrate = runMigrations) 
 }
 
 /** Sample data in the format production has at PRODUCTION_BASELINE (as written by the current app). */
-async function seedBaseline(url) {
+export async function seedBaseline(url) {
   const client = new pg.Client({ connectionString: url });
   await client.connect();
   const care = (extra = {}) =>

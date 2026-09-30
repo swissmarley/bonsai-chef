@@ -9,11 +9,15 @@ import {
   type Bonsai,
   type BonsaiCare,
   type BonsaiCategory,
+  type BonsaiSchedule,
+  type CareFrequency,
   type CareKey,
   type CareSection,
 } from '../../shared/model';
 import { ConfirmDialog } from '../components/Dialog';
 import { Section, Segmented, TextArea, TextField } from '../components/Fields';
+import { FrequencyInput } from '../components/Frequency';
+import { GroupSelect } from '../components/Groups';
 import { MonthRangeInput } from '../components/Months';
 import { PageHeader } from '../components/PageHeader';
 import { PhotoEditor, toPhotoItems, type PhotoItem } from '../components/Photos';
@@ -29,6 +33,8 @@ interface FormState {
   substrate: string;
   pot: string;
   care: BonsaiCare;
+  groupId: string | null;
+  schedule: BonsaiSchedule;
 }
 
 const CATEGORY_OPTIONS = BONSAI_CATEGORIES.map((value) => ({ value, label: BONSAI_CATEGORY_LABELS[value] }));
@@ -74,6 +80,8 @@ function BonsaiForm({ existing }: { existing?: Bonsai }) {
     substrate: existing?.substrate ?? '',
     pot: existing?.pot ?? '',
     care: existing?.care ?? emptyCare(),
+    groupId: existing?.groupId ?? params.get('gruppo') ?? null,
+    schedule: existing?.schedule ?? {},
   }));
   const initialPhotos = useMemo(() => (existing?.photos ?? []).map((p) => p.id).join(), [existing]);
   const [form, setForm] = useState<FormState>(initial);
@@ -89,6 +97,13 @@ function BonsaiForm({ existing }: { existing?: Bonsai }) {
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((f) => ({ ...f, [key]: value }));
   const setCare = (key: CareKey, patch: Partial<CareSection>) =>
     setForm((f) => ({ ...f, care: { ...f.care, [key]: { ...f.care[key], ...patch } } }));
+  const setFrequency = (key: CareKey, value: CareFrequency | undefined) =>
+    setForm((f) => {
+      const schedule = { ...f.schedule };
+      if (value) schedule[key] = value;
+      else delete schedule[key];
+      return { ...f, schedule };
+    });
 
   async function submit(e?: FormEvent) {
     e?.preventDefault();
@@ -159,6 +174,7 @@ function BonsaiForm({ existing }: { existing?: Bonsai }) {
             autoFocus={!existing}
           />
           <Segmented label="Categoria" value={form.category} options={CATEGORY_OPTIONS} onChange={(v) => set('category', v)} />
+          <GroupSelect value={form.groupId} onChange={(v) => set('groupId', v)} />
           <TextField label="Substrato" value={form.substrate} onChange={(e) => set('substrate', e.target.value)} maxLength={300} />
           <TextField label="Vaso" value={form.pot} onChange={(e) => set('pot', e.target.value)} maxLength={300} />
         </Section>
@@ -166,7 +182,11 @@ function BonsaiForm({ existing }: { existing?: Bonsai }) {
         {CARE_SECTIONS.map((config) => {
           const section = form.care[config.key];
           return (
-            <Section key={config.key} title={config.title}>
+            <Section
+              key={config.key}
+              title={config.title}
+              footer={config.dateLabel && existing ? 'Ogni intervento fatto si può registrare nello Storico della scheda del bonsai.' : undefined}
+            >
               {config.dateLabel && (
                 <TextField
                   label={config.dateLabel}
@@ -188,6 +208,7 @@ function BonsaiForm({ existing }: { existing?: Bonsai }) {
                 end={section.endMonth}
                 onChange={(startMonth, endMonth) => setCare(config.key, { startMonth, endMonth })}
               />
+              <FrequencyInput careKey={config.key} value={form.schedule[config.key]} onChange={(v) => setFrequency(config.key, v)} />
               <TextArea label="Note" value={section.notes} onChange={(e) => setCare(config.key, { notes: e.target.value })} maxLength={5000} />
             </Section>
           );
