@@ -64,7 +64,7 @@ Rollback (Netlify "Publish deploy" of the previous version) stays safe: the old 
 | PUT/DELETE | `/api/events/:id` | edit / delete one entry |
 | GET | `/api/tools?types=all` | includes `concime` (new clients only) |
 | POST | `/api/feedback` | contact form → e-mail to `FEEDBACK_EMAIL` (reply-to = the tester), max 5 per hour per user |
-| GET | `/api/auth/me` | now also returns the announcements already dismissed (old clients ignore the extra field) |
+| GET | `/api/announcements` | the announcements this account already dismissed |
 | POST | `/api/announcements/:key/seen` | marks the "Novità" message as dismissed for this account |
 
 All queries stay scoped by `user_id`; input validated with zod; Italian error messages.
@@ -113,6 +113,11 @@ Optional extra barrier: Netlify → Branches and deploy contexts → Deploy Prev
 
 Before release day:
 - [ ] Netlify → Environment variables: add `FEEDBACK_EMAIL` (where contact-form messages arrive).
+
+Rehearsal on a copy of production (before merging):
+- [ ] Neon console → Branches → create a branch from production (e.g. `rehearsal-v2`) → copy its connection string.
+- [ ] `REHEARSAL_DATABASE_URL=<that string> npm run db:rehearse` — must end with "Rehearsal passed".
+  Then delete that branch (it is only a copy).
 
 On release day:
 - [ ] Neon: create a branch `backup-pre-v2` from production (instant copy, restorable).

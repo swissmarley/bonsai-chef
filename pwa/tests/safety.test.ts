@@ -97,7 +97,7 @@ describe('build-time migrations', () => {
 
 describe('deploy previews', () => {
   afterEach(() => vi.unstubAllEnvs());
-  const context = (name: string) => ({ deploy: { context: name, id: '1', published: false }, ip: '1.2.3.4' }) as never;
+  const context = (name: string, published = false) => ({ deploy: { context: name, id: '1', published }, ip: '1.2.3.4' }) as never;
 
   it('only production and local development may use data', () => {
     vi.stubEnv('NETLIFY_DEV', '');
@@ -106,6 +106,8 @@ describe('deploy previews', () => {
     expect(canUseData(context('deploy-preview'))).toBe(false);
     expect(canUseData(context('branch-deploy'))).toBe(false);
     expect(canUseData({ deploy: undefined } as never)).toBe(false);
+    expect(canUseData(context('', true))).toBe(true); // the published (live) deploy
+    expect(canUseData(context('deploy-preview', false))).toBe(false);
     vi.stubEnv('NETLIFY_DEV', 'true');
     expect(canUseData(context('dev'))).toBe(true);
   });

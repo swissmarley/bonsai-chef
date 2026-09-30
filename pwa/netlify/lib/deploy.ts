@@ -7,7 +7,9 @@ import { isDev } from './email';
  * and local development may read or write data; every other deploy is a look-only preview.
  */
 export function canUseData(context: Pick<Context, 'deploy'>): boolean {
-  return context.deploy?.context === 'production' || isDev();
+  // Only a production deploy can be the published one; checking both keeps the live site (and its
+  // scheduled reminders) working even if one of the two signals were missing.
+  return context.deploy?.context === 'production' || context.deploy?.published === true || isDev();
 }
 
 export const PREVIEW_MESSAGE = 'Questa è un’anteprima dell’app: i dati sono disponibili solo nella versione pubblicata.';
