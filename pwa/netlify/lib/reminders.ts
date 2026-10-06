@@ -1,5 +1,5 @@
 import { getStore } from '@netlify/blobs';
-import type { Reminder } from '../../shared/model';
+import { CARE_KEYS, type CareKey, type Reminder } from '../../shared/model';
 import { requireUser } from './auth';
 import { getDb, iso, isoOrNull } from './db';
 import { reminderEmail, sendEmail } from './email';
@@ -8,32 +8,34 @@ import { purgeAbandonedPhotos } from './photos';
 import { sendPushToUser } from './push';
 import { reminderSchema } from './schemas';
 
-interface ReminderRow {
+export interface ReminderRow {
   id: string;
   bonsai_id: string;
   message: string;
   remind_at: Date;
   sent_at: Date | null;
+  care_kind: string | null;
   created_at: Date;
 }
 
-const toReminder = (r: ReminderRow): Reminder => ({
+export const toReminder = (r: ReminderRow): Reminder => ({
   id: r.id,
   bonsaiId: r.bonsai_id,
   message: r.message,
   remindAt: iso(r.remind_at),
   sentAt: isoOrNull(r.sent_at),
+  careKind: CARE_KEYS.includes(r.care_kind as CareKey) ? (r.care_kind as CareKey) : null,
   createdAt: iso(r.created_at),
 });
 
-const COLUMNS = 'id, bonsai_id, message, remind_at, sent_at, created_at';
+export const REMINDER_COLUMNS = 'id, bonsai_id, message, remind_at, sent_at, care_kind, created_at';
 
 /** Pending (not yet delivered) reminders of the user, soonest first. */
 export async function listReminders({ req }: RouteContext): Promise<Response> {
   const user = await requireUser(req);
   const db = await getDb();
   const rows = await db.query<ReminderRow>(
-    `SELECT ${COLUMNS} FROM reminders WHERE user_id = $1 AND sent_at IS NULL ORDER BY remind_at`,
+    `SELECT ${REMINDER_COLUMNS} FROM reminders WHERE user_id = $1 AND sent_at IS NULL ORDER BY remind_at`,
     [user.id],
   );
   return json({ reminders: rows.map(toReminder) });
@@ -46,7 +48,7 @@ export async function createReminder({ req }: RouteContext): Promise<Response> {
   const [row] = await db.query<ReminderRow>(
     `INSERT INTO reminders (user_id, bonsai_id, message, remind_at)
      SELECT $1, id, $3, $4 FROM bonsai WHERE id = $2 AND user_id = $1
-     RETURNING ${COLUMNS}`,
+     RETURNING ${REMINDER_COLUMNS}`,
     [user.id, input.bonsaiId, input.message, input.remindAt],
   );
   if (!row) throw new HttpError(404, 'Bonsai non trovato.');

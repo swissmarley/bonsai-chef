@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { BellRing, Download, LogOut, Share } from 'lucide-react';
+import { BellRing, ChevronRight, Download, Info, LogOut, Share } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 import { api } from '../lib/api';
 import { useInstallPrompt } from '../lib/install';
 import { disablePush, enablePush, getPushState, isIos, isStandalone, type PushState } from '../lib/push';
@@ -105,6 +106,11 @@ export function AccountSheet({ onClose }: { onClose: () => void }) {
           )}
         </div>
       )}
+
+      <Link to="/info" className="action-item">
+        <Info size={22} aria-hidden="true" /> <span className="action-item-label">Informazioni e contatti</span>
+        <ChevronRight size={18} className="row-chevron" aria-hidden="true" />
+      </Link>
 
       {error && (
         <p className="form-error" role="alert">

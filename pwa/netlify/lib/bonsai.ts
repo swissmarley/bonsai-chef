@@ -4,7 +4,7 @@ import { requireUser } from './auth';
 import { getDb, iso } from './db';
 import { HttpError, isUuid, json, noContent, parseInput, readJson, type RouteContext } from './http';
 import { assertPhotosAvailable, photosByOwner, purgePhotos, syncPhotosQueries } from './photos';
-import { bonsaiSchema, normalizeCare } from './schemas';
+import { bonsaiSchema, normalizeCare, normalizeSchedule } from './schemas';
 
 interface BonsaiRow {
   id: string;
@@ -13,11 +13,13 @@ interface BonsaiRow {
   substrate: string;
   pot: string;
   care: unknown;
+  group_id: string | null;
+  schedule: unknown;
   created_at: Date;
   updated_at: Date;
 }
 
-const COLUMNS = 'id, name, category, substrate, pot, care, created_at, updated_at';
+const COLUMNS = 'id, name, category, substrate, pot, care, group_id, schedule, created_at, updated_at';
 
 const toBonsai = (r: BonsaiRow, photos: Photo[]): Bonsai => ({
   id: r.id,
@@ -26,6 +28,8 @@ const toBonsai = (r: BonsaiRow, photos: Photo[]): Bonsai => ({
   substrate: r.substrate,
   pot: r.pot,
   care: normalizeCare(r.care as Parameters<typeof normalizeCare>[0]),
+  groupId: r.group_id,
+  schedule: normalizeSchedule(r.schedule),
   photos,
   createdAt: iso(r.created_at),
   updatedAt: iso(r.updated_at),
@@ -51,17 +55,35 @@ export async function listBonsai({ req }: RouteContext): Promise<Response> {
   return json({ bonsai: rows.map((r) => toBonsai(r, photos.get(r.id) ?? [])) });
 }
 
+/** A bonsai can only be put in one of the user's own groups. */
+async function assertGroup(userId: string, groupId: string | null | undefined) {
+  if (!groupId) return;
+  const db = await getDb();
+  const rows = await db.query('SELECT 1 FROM bonsai_groups WHERE id = $1 AND user_id = $2', [groupId, userId]);
+  if (!rows.length) throw new HttpError(400, 'Il gruppo scelto non esiste più. Scegline un altro.');
+}
+
 export async function createBonsai({ req }: RouteContext): Promise<Response> {
   const user = await requireUser(req);
   const input = parseInput(bonsaiSchema, await readJson(req));
   const id = randomUUID();
-  await assertPhotosAvailable(user.id, 'bonsai_id', id, input.photoIds);
+  await Promise.all([assertPhotosAvailable(user.id, 'bonsai_id', id, input.photoIds), assertGroup(user.id, input.groupId)]);
   const db = await getDb();
   await db.transaction([
     {
-      text: `INSERT INTO bonsai (id, user_id, name, category, substrate, pot, care)
-             VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb)`,
-      params: [id, user.id, input.name, input.category, input.substrate, input.pot, JSON.stringify(normalizeCare(input.care))],
+      text: `INSERT INTO bonsai (id, user_id, name, category, substrate, pot, care, group_id, schedule)
+             VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9::jsonb)`,
+      params: [
+        id,
+        user.id,
+        input.name,
+        input.category,
+        input.substrate,
+        input.pot,
+        JSON.stringify(normalizeCare(input.care)),
+        input.groupId ?? null,
+        JSON.stringify(input.schedule ?? {}),
+      ],
     },
     ...syncPhotosQueries(user.id, 'bonsai_id', id, input.photoIds),
   ]);
@@ -72,13 +94,30 @@ export async function updateBonsai({ req, params }: RouteContext): Promise<Respo
   const user = await requireUser(req);
   if (!isUuid(params.id)) throw new HttpError(404, 'Bonsai non trovato.');
   const input = parseInput(bonsaiSchema, await readJson(req));
-  await assertPhotosAvailable(user.id, 'bonsai_id', params.id, input.photoIds);
+  await Promise.all([assertPhotosAvailable(user.id, 'bonsai_id', params.id, input.photoIds), assertGroup(user.id, input.groupId)]);
   const db = await getDb();
+  // Group and schedule are only changed when sent: older app versions (still cached on some
+  // devices) do not know them, and saving from there must not remove a tree from its group.
   const [updated, removed] = await db.transaction([
     {
-      text: `UPDATE bonsai SET name = $3, category = $4, substrate = $5, pot = $6, care = $7::jsonb, updated_at = now()
+      text: `UPDATE bonsai SET name = $3, category = $4, substrate = $5, pot = $6, care = $7::jsonb,
+                    group_id = CASE WHEN $8 THEN $9::uuid ELSE group_id END,
+                    schedule = CASE WHEN $10 THEN $11::jsonb ELSE schedule END,
+                    updated_at = now()
               WHERE id = $1 AND user_id = $2 RETURNING id`,
-      params: [params.id, user.id, input.name, input.category, input.substrate, input.pot, JSON.stringify(normalizeCare(input.care))],
+      params: [
+        params.id,
+        user.id,
+        input.name,
+        input.category,
+        input.substrate,
+        input.pot,
+        JSON.stringify(normalizeCare(input.care)),
+        input.groupId !== undefined,
+        input.groupId ?? null,
+        input.schedule !== undefined,
+        JSON.stringify(input.schedule ?? {}),
+      ],
     },
     ...syncPhotosQueries(user.id, 'bonsai_id', params.id, input.photoIds),
   ]);

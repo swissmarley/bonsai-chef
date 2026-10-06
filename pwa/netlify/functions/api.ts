@@ -1,7 +1,11 @@
 import type { Config, Context } from '@netlify/functions';
+import { listAnnouncements, markAnnouncementSeen, sendFeedback } from '../lib/account';
 import { logout, me, requestCode, verifyCode } from '../lib/auth';
 import { createBonsai, deleteBonsai, listBonsai, updateBonsai } from '../lib/bonsai';
-import { Router } from '../lib/http';
+import { canUseData, PREVIEW_MESSAGE } from '../lib/deploy';
+import { createEvents, deleteEvent, eventSuggestions, listEvents, updateEvent } from '../lib/events';
+import { createGroup, deleteGroup, listGroups, renameGroup, reorderGroups } from '../lib/groups';
+import { json, Router } from '../lib/http';
 import { servePhoto, uploadPhoto } from '../lib/photos';
 import { publicKey, sendTest, subscribe, unsubscribe } from '../lib/push';
 import { createReminder, deleteReminder, listReminders } from '../lib/reminders';
@@ -16,6 +20,16 @@ const router = new Router()
   .on('POST', '/api/bonsai', createBonsai)
   .on('PUT', '/api/bonsai/:id', updateBonsai)
   .on('DELETE', '/api/bonsai/:id', deleteBonsai)
+  .on('GET', '/api/bonsai/:id/events', listEvents)
+  .on('GET', '/api/groups', listGroups)
+  .on('POST', '/api/groups', createGroup)
+  .on('PUT', '/api/groups/order', reorderGroups)
+  .on('PUT', '/api/groups/:id', renameGroup)
+  .on('DELETE', '/api/groups/:id', deleteGroup)
+  .on('GET', '/api/events/suggestions', eventSuggestions)
+  .on('POST', '/api/events', createEvents)
+  .on('PUT', '/api/events/:id', updateEvent)
+  .on('DELETE', '/api/events/:id', deleteEvent)
   .on('GET', '/api/tools', listTools)
   .on('POST', '/api/tools', createTool)
   .on('PUT', '/api/tools/:id', updateTool)
@@ -28,9 +42,16 @@ const router = new Router()
   .on('GET', '/api/push/public-key', publicKey)
   .on('POST', '/api/push/subscribe', subscribe)
   .on('POST', '/api/push/unsubscribe', unsubscribe)
-  .on('POST', '/api/push/test', sendTest);
+  .on('POST', '/api/push/test', sendTest)
+  .on('POST', '/api/feedback', sendFeedback)
+  .on('GET', '/api/announcements', listAnnouncements)
+  .on('POST', '/api/announcements/:key/seen', markAnnouncementSeen);
 
-export default (req: Request, context: Context) => router.handle(req, context.ip);
+export default async (req: Request, context: Context) => {
+  // Deploy previews share the production database and photos: they never touch them.
+  if (!canUseData(context)) return json({ error: PREVIEW_MESSAGE }, { status: 503 });
+  return router.handle(req, context.ip);
+};
 
 export const config: Config = {
   path: '/api/*',

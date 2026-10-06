@@ -24,7 +24,10 @@ registerRoute(
 
 // Data: always the network; the last copy is used only when the network fails (offline).
 registerRoute(
-  ({ url, request }) => sameOrigin(url) && request.method === 'GET' && /^\/api\/(bonsai|tools|reminders|auth\/me)$/.test(url.pathname),
+  ({ url, request }) =>
+    sameOrigin(url) &&
+    request.method === 'GET' &&
+    /^\/api\/(bonsai|bonsai\/[\w-]+\/events|tools|reminders|groups|events\/suggestions|announcements|auth\/me)$/.test(url.pathname),
   new NetworkFirst({ cacheName: 'bc-data' }),
 );
 

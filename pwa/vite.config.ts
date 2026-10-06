@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -29,7 +30,10 @@ const contentSecurityPolicy: Plugin = {
   ],
 };
 
+const { version } = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as { version: string };
+
 export default defineConfig({
+  define: { __APP_VERSION__: JSON.stringify(version) },
   plugins: [
     react(),
     contentSecurityPolicy,
@@ -72,5 +76,7 @@ export default defineConfig({
   server: { port: 5173, strictPort: true },
   test: {
     include: ['tests/**/*.test.ts'],
+    // Database tests need Postgres: `npm run test:db`.
+    exclude: ['tests/db/**', 'node_modules/**'],
   },
 });

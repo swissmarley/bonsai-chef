@@ -75,12 +75,15 @@ export async function servePhoto({ req, params }: RouteContext): Promise<Respons
   });
 }
 
-/** Photos of the user's records of one kind (or of one record), grouped by record id, in display order. */
+/**
+ * Photos of the user's records of one kind (or of one record), grouped by record id, in display order.
+ * Photos of diary entries are left out: they belong to their entry (see events.ts).
+ */
 export async function photosByOwner(userId: string, column: PhotoOwnerColumn, ownerId?: string): Promise<Map<string, Photo[]>> {
   const db = await getDb();
   const rows = await db.query<{ id: string; owner_id: string; width: number | null; height: number | null }>(
     `SELECT id, ${column} AS owner_id, width, height FROM photos
-      WHERE user_id = $1 AND ${column} IS NOT NULL ${ownerId ? `AND ${column} = $2` : ''}
+      WHERE user_id = $1 AND ${column} IS NOT NULL AND event_id IS NULL ${ownerId ? `AND ${column} = $2` : ''}
       ORDER BY position, created_at`,
     ownerId ? [userId, ownerId] : [userId],
   );
@@ -120,16 +123,18 @@ export async function assertPhotosAvailable(userId: string, column: PhotoOwnerCo
  */
 export function syncPhotosQueries(userId: string, column: PhotoOwnerColumn, ownerId: string, photoIds: string[]): Query[] {
   const table = OWNER_TABLE[column];
+  // Photos of diary entries (event_id set) are never touched here: the bonsai form does not list
+  // them, so leaving them out of `photoIds` must not detach (and then delete) them.
   return [
     {
       text: `UPDATE photos SET ${column} = NULL
-              WHERE ${column} = $1 AND user_id = $2 AND NOT (id = ANY($3::uuid[]))
+              WHERE ${column} = $1 AND user_id = $2 AND event_id IS NULL AND NOT (id = ANY($3::uuid[]))
               RETURNING id`,
       params: [ownerId, userId, photoIds],
     },
     {
       text: `UPDATE photos SET ${column} = $1, position = array_position($3::uuid[], id) - 1
-              WHERE user_id = $2 AND id = ANY($3::uuid[])
+              WHERE user_id = $2 AND id = ANY($3::uuid[]) AND event_id IS NULL
                 AND ((bonsai_id IS NULL AND tool_id IS NULL) OR ${column} = $1)
                 AND EXISTS (SELECT 1 FROM ${table} WHERE id = $1 AND user_id = $2)`,
       params: [ownerId, userId, photoIds],

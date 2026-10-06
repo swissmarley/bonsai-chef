@@ -1,7 +1,7 @@
 {
   "name": "bonsai-chef-pwa",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Bonsai Chef — il diario per la cura dei tuoi bonsai (PWA)",
   "type": "module",
   "engines": {
@@ -12,9 +12,11 @@
     "dev": "npx -y netlify-cli@27 dev",
     "dev:db": "node scripts/dev-db.mjs",
     "db:migrate": "node scripts/migrate.mjs",
+    "db:rehearse": "node scripts/rehearse-migrations.mjs",
     "build": "npm run typecheck && npm test && vite build && node scripts/migrate.mjs --if-configured",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p src/tsconfig.sw.json --noEmit && tsc -p netlify/tsconfig.json --noEmit",
     "test": "vitest run",
+    "test:db": "vitest run --config vitest.db.config.ts",
     "preview": "vite preview"
   },
   "dependencies": {

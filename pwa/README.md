@@ -2,7 +2,8 @@
 
 Installable web app (Italian UI) rebuilt from the original iOS app in [`../ios`](../ios).
 Same features: bonsai records with six care sections, tools & supplements, photos, reminders —
-plus e-mail/OTP login and sync across devices.
+plus e-mail/OTP login and sync across devices. Version 2 adds groups, a care diary (storico interventi) with
+frequencies and automatic reminders, a "Concimi" category, an Info page with a contact form (see [PLAN-v2.md](PLAN-v2.md)).
 
 **Stack:** React 19 + Vite + TypeScript · `vite-plugin-pwa` (Workbox) · Netlify Functions ·
 Neon Postgres (`@neondatabase/serverless`) · Netlify Blobs (photos) · Resend (e-mail) · Web Push.
@@ -12,10 +13,10 @@ pwa/
 ├── src/                 React app (pages, components, service worker src/sw.ts)
 ├── shared/model.ts      Types, labels and care sections shared by app and API
 ├── netlify/functions/   api.ts (all /api/* routes) · reminders-cron.ts (every minute)
-├── netlify/lib/         auth (OTP + sessions), db, photos, push, reminders, validation
-├── db/migrations/       SQL migrations (applied by scripts/migrate.mjs)
-├── scripts/             setup-env, dev-db (local Postgres), migrate
-└── tests/               unit tests (vitest)
+├── netlify/lib/         auth (OTP + sessions), db, deploy guard, groups, events (diary), photos, push, reminders, validation
+├── db/migrations/       SQL migrations, additive only (applied by scripts/migrate.mjs)
+├── scripts/             setup-env, dev-db (local Postgres), migrate, rehearse-migrations
+└── tests/               unit tests (vitest); tests/db: database tests on a throwaway Postgres
 ```
 
 ## Run it locally
@@ -34,7 +35,8 @@ Log in with any e-mail: without `RESEND_API_KEY` the 6-digit code is printed in 
 terminal. Push notifications need the production build (`npx netlify-cli serve`) or a deploy,
 because the service worker is disabled in development.
 
-Other scripts: `npm test` · `npm run typecheck` · `npm run build` · `npm run db:migrate`.
+Other scripts: `npm test` · `npm run test:db` · `npm run typecheck` · `npm run build` · `npm run db:migrate` ·
+`npm run db:rehearse`.
 
 ## Deploy (GitHub → Netlify)
 
@@ -43,13 +45,14 @@ Other scripts: `npm test` · `npm run typecheck` · `npm run build` · `npm run 
 2. Set **Base directory** to `pwa`. Build command (`npm run build`) and publish directory (`dist`) come from `pwa/netlify.toml`.
 
 ### 2. Database (Neon)
-1. Create a project at [console.neon.tech](https://console.neon.tech) (free tier is plenty), in a region close to your
-   Netlify functions (e.g. AWS Frankfurt `eu-central-1`).
+1. Create a project at [console.neon.tech](https://console.neon.tech) (free tier is plenty) in the same region as your
+   Netlify functions: **AWS US East 2 (Ohio)**, Netlify's default. A distant database adds a round trip to every query.
 2. **Connect** → copy the **pooled** connection string → Netlify variable `DATABASE_URL`.
 3. Optional: the direct (unpooled) string → `DATABASE_URL_UNPOOLED`, used only for migrations.
 
 If you add Neon through Netlify's Neon extension instead, it sets `NETLIFY_DATABASE_URL`, which the app reads as well.
-Migrations run automatically at the end of every build (`scripts/migrate.mjs`), so the schema is created on the first deploy.
+Migrations run automatically at the end of every **production** build (`scripts/migrate.mjs`), so the schema is created on
+the first deploy. Deploy previews and branch deploys never migrate.
 
 ### 3. E-mail (Resend)
 1. Create an account at [resend.com](https://resend.com) and an API key → `RESEND_API_KEY`.
@@ -68,6 +71,7 @@ Netlify → **Project configuration → Environment variables**:
 | `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | for push | from your `.env` — keep them stable, changing them invalidates devices' subscriptions |
 | `VAPID_SUBJECT` | for push | `mailto:you@example.com` |
 | `ALLOWED_EMAILS` | optional | comma-separated allow-list; empty = anyone can sign up |
+| `FEEDBACK_EMAIL` | for the contact form | where messages from the Info page arrive (never shown in the app); replies go to the tester |
 
 Then trigger a deploy. Every push to `main` deploys to production; pull requests get deploy previews.
 Commits that only touch `ios/` are skipped.
@@ -84,5 +88,13 @@ Commits that only touch `ios/` are skipped.
   their owner can load them.
 - **Security:** OTPs are HMAC-hashed, expire after 10 minutes and allow 5 attempts; sessions are HttpOnly cookies
   whose SHA-256 is stored server-side; writes from other origins are rejected; production pages ship a strict CSP.
-- Deploy previews share the production database and photo storage: treat them like production, and keep
-  migrations backwards compatible.
+- **Deploy previews** would share the production database and photo storage (per-context variables need a paid
+  Netlify plan), so they never touch data: their builds skip migrations, and their `/api` answers 503 before any
+  database or Blobs access (`netlify/lib/deploy.ts`). A preview shows the app, but login fails there by design.
+- **Existing data is never changed by a migration.** `tests/safety.test.ts` rejects any migration statement that could
+  change or remove existing rows (only `CREATE TABLE`, `CREATE INDEX` and `ALTER TABLE … ADD` pass).
+  `npm run db:rehearse -- --local` applies the pending migrations to sample data in the production format and checks that
+  every existing row is byte-identical afterwards; `REHEARSAL_DATABASE_URL=<Neon branch> npm run db:rehearse` does the
+  same on a Neon branch (copy) of production — never on production itself.
+- **Older app versions** stay cached on some devices until their users tap "Aggiorna": the API keeps fields they do not
+  send (group, frequencies), never detaches diary photos, and returns Concimi only to this version (`?types=all`).
